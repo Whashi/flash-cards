@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 
-const Card = ({ increment, limit }) => {
+const Card = ({ increment, limit, setFeedBack, setFeedBackClass }) => {
   const [firstNumber, setFirstNumber] = useState(0);
   const [secondNumber, setSecondNumber] = useState(0);
   const [userAnswer, setUserAnswer] = useState("");
-  const [feedBack, setFeedBack] = useState();
 
   const getRandomInt = (min, max) => {
     min = Math.ceil(min);
@@ -14,6 +13,8 @@ const Card = ({ increment, limit }) => {
 
   const generateNumbers = () => {
     const newFirstNumber = getRandomInt(1, limit);
+    console.log(newFirstNumber);
+
     setFirstNumber(newFirstNumber);
     setSecondNumber(getRandomInt(1, limit - newFirstNumber));
   };
@@ -21,14 +22,17 @@ const Card = ({ increment, limit }) => {
   const checkAnswer = () => {
     if (userAnswer && parseInt(userAnswer, 10) === firstNumber + secondNumber) {
       setFeedBack("Correct!");
+      setFeedBackClass("correct");
       increment();
       generateNumbers();
       setUserAnswer("");
       setTimeout(() => {
-        setFeedBack(null);
+        setFeedBack(" ");
+        setFeedBackClass("");
       }, 2000);
     } else {
       setFeedBack(`${userAnswer} is incorrect. Try again.`);
+      setFeedBackClass("incorrect");
     }
   };
 
@@ -49,10 +53,9 @@ const Card = ({ increment, limit }) => {
     generateNumbers();
   }, []);
   return (
-    <div>
-      {feedBack && <h2>{feedBack}</h2>}
-      {firstNumber} + {secondNumber}
-      <br />
+    <div className="card">
+      <h3>{firstNumber}</h3> <h3>+ {secondNumber}</h3>
+      <hr />
       <input
         type="number"
         inputMode="numeric"

@@ -3,12 +3,14 @@ import "./App.css";
 import Card from "./component/Card";
 
 function App() {
-  const LIMIT = 10;
+  const LIMIT = 9;
   const TIME_LIMIT = 3;
   const GOAL = 100;
 
   const [count, setCount] = useState(0);
   const [timer, setTimer] = useState(0);
+  const [feedBack, setFeedBack] = useState(" ");
+  const [feedBackClass, setFeedBackClass] = useState("");
 
   const increment = () => {
     setCount(count + 1);
@@ -28,13 +30,19 @@ function App() {
   };
 
   return (
-    <>
+    <div className="container">
       <h1>Aitana's Flash Cards</h1>
       {timer > 0 && count < GOAL ? (
         <div>
+          <h2 className={`feedback ${feedBackClass}`}>{feedBack}</h2>
           <h2>Count: {count}</h2>
           <h2>Time Left: {Math.floor(timer / 1000)} seconds</h2>
-          <Card increment={increment} limit={LIMIT} />
+          <Card
+            increment={increment}
+            limit={LIMIT}
+            setFeedBack={setFeedBack}
+            setFeedBackClass={setFeedBackClass}
+          />
         </div>
       ) : (
         <div>
@@ -42,7 +50,7 @@ function App() {
           <button onClick={startTimer}>Start</button>
         </div>
       )}
-    </>
+    </div>
   );
 }
 

@@ -32,11 +32,16 @@ const Card = ({ increment, limit }) => {
     }
   };
 
+  useEffect(() => {
+    if (userAnswer !== "") {
+      checkAnswer();
+    }
+  }, [userAnswer]);
+
   const handleChange = (e) => {
     const value = e.target.value;
     if (value === "" || !isNaN(value)) {
       setUserAnswer(value);
-      checkAnswer();
     }
   };
 
@@ -50,6 +55,7 @@ const Card = ({ increment, limit }) => {
       <br />
       <input
         type="number"
+        inputMode="numeric"
         autoFocus
         value={userAnswer}
         onChange={handleChange}

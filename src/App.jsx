@@ -29,8 +29,7 @@ function App() {
 
   return (
     <>
-      <h1>Flash Cards</h1>
-
+      <h1>Aitana's Flash Cards</h1>
       {timer > 0 && count < GOAL ? (
         <div>
           <h2>Count: {count}</h2>
@@ -39,7 +38,6 @@ function App() {
         </div>
       ) : (
         <div>
-          {" "}
           {count > 0 && <h3>You got {count} answers</h3>}
           <button onClick={startTimer}>Start</button>
         </div>

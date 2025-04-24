@@ -13,9 +13,9 @@ const Card = ({ increment, limit }) => {
   };
 
   const generateNumbers = () => {
-    const newFirstNumber = getRandomInt(0, limit);
+    const newFirstNumber = getRandomInt(1, limit);
     setFirstNumber(newFirstNumber);
-    setSecondNumber(getRandomInt(0, limit - newFirstNumber));
+    setSecondNumber(getRandomInt(1, limit - newFirstNumber));
   };
 
   const checkAnswer = () => {
@@ -28,7 +28,7 @@ const Card = ({ increment, limit }) => {
         setFeedBack(null);
       }, 2000);
     } else {
-      setFeedBack("Incorrect. Try again.");
+      setFeedBack(`${userAnswer} is incorrect. Try again.`);
     }
   };
 
@@ -36,11 +36,6 @@ const Card = ({ increment, limit }) => {
     const value = e.target.value;
     if (value === "" || !isNaN(value)) {
       setUserAnswer(value);
-    }
-  };
-
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter") {
       checkAnswer();
     }
   };
@@ -54,10 +49,10 @@ const Card = ({ increment, limit }) => {
       {firstNumber} + {secondNumber}
       <br />
       <input
+        type="number"
         autoFocus
         value={userAnswer}
         onChange={handleChange}
-        onKeyDown={handleKeyDown}
       />
     </div>
   );

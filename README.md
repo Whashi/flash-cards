@@ -1,12 +1,58 @@
-# React + Vite
+# Flash Cards Math Game
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simple and interactive math flash cards game built with React. Perfect for helping children practice their addition skills under time pressure.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Dynamic addition problems up to 9
+- Timer-based gameplay (3 minutes)
+- Instant feedback on answers
+- Goal-based system (100 problems)
+- Mobile-friendly number pad input
+- Visual feedback for correct/incorrect answers
 
-## Expanding the ESLint configuration
+## Getting Started
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Prerequisites
+
+- Node.js
+- npm or yarn
+
+### Installation
+
+1. Clone the repository
+```bash
+git clone [your-repo-url]
+```
+
+2. Install dependencies
+```bash
+npm install
+```
+
+3. Start the development server
+```bash
+npm run dev
+```
+
+## How to Play
+
+1. Click the "Start" button to begin
+2. You have 3 minutes to solve as many addition problems as possible
+3. Type your answer in the input field
+4. Get immediate feedback on your answers
+5. Try to reach 100 correct answers before time runs out!
+
+## Built With
+
+- React
+- Vite
+- CSS
+
+## Contributing
+
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)

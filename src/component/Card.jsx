@@ -1,35 +1,46 @@
 import { useEffect, useState } from "react";
+import {
+  generateAdditionNumbers,
+  generateSubtactionNumbers,
+} from "../services/arithmaticService";
 
-const Card = ({ increment, limit, setFeedBack, setFeedBackClass }) => {
-  const [firstNumber, setFirstNumber] = useState(0);
-  const [secondNumber, setSecondNumber] = useState(0);
+const OPERATIONS = {
+  "+": {
+    generate: generateAdditionNumbers,
+    calculate: (a, b) => a + b,
+  },
+  "-": {
+    generate: generateSubtactionNumbers,
+    calculate: (a, b) => a - b,
+  },
+};
+
+const Card = ({
+  increment,
+  limit,
+  setFeedBack,
+  setFeedBackClass,
+  operation,
+}) => {
+  const [numbers, setNumbers] = useState([]);
   const [userAnswer, setUserAnswer] = useState("");
 
-  const getRandomInt = (min, max) => {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  };
-
-  const generateNumbers = () => {
-    const newFirstNumber = getRandomInt(1, limit);
-    console.log(newFirstNumber);
-
-    setFirstNumber(newFirstNumber);
-    setSecondNumber(getRandomInt(1, limit - newFirstNumber));
-  };
-
   const checkAnswer = () => {
-    if (userAnswer && parseInt(userAnswer, 10) === firstNumber + secondNumber) {
+    if (
+      userAnswer &&
+      parseInt(userAnswer, 10) ===
+        OPERATIONS[operation].calculate(numbers[0], numbers[1])
+    ) {
       setFeedBack("Correct!");
       setFeedBackClass("correct");
       increment();
-      generateNumbers();
+      setNumbers(() => OPERATIONS[operation].generate(limit, numbers[0]));
       setUserAnswer("");
-      setTimeout(() => {
+      const timer = setTimeout(() => {
         setFeedBack(" ");
         setFeedBackClass("");
       }, 2000);
+      return () => clearTimeout(timer);
     } else {
       setFeedBack(`${userAnswer} is incorrect. Try again.`);
       setFeedBackClass("incorrect");
@@ -50,11 +61,15 @@ const Card = ({ increment, limit, setFeedBack, setFeedBackClass }) => {
   };
 
   useEffect(() => {
-    generateNumbers();
+    setNumbers(() => OPERATIONS[operation].generate(limit, 0));
   }, []);
+
   return (
     <div className="card">
-      <h3>{firstNumber}</h3> <h3>+ {secondNumber}</h3>
+      <h3>{numbers[0]}</h3>{" "}
+      <h3>
+        {operation} {numbers[1]}
+      </h3>
       <hr />
       <input
         type="number"

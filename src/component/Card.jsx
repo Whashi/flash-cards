@@ -37,12 +37,12 @@ const Card = ({
       setNumbers(() => OPERATIONS[operation].generate(limit, numbers[0]));
       setUserAnswer("");
       const timer = setTimeout(() => {
-        setFeedBack(" ");
+        setFeedBack("You got this...");
         setFeedBackClass("");
       }, 2000);
       return () => clearTimeout(timer);
     } else {
-      setFeedBack(`${userAnswer} is incorrect. Try again.`);
+      setFeedBack("Try again");
       setFeedBackClass("incorrect");
     }
   };
@@ -70,7 +70,6 @@ const Card = ({
       <h3>
         {operation} {numbers[1]}
       </h3>
-      <hr />
       <input
         type="number"
         inputMode="numeric"

@@ -1,17 +1,64 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import Card from "./component/Card";
+import SpellingCard from "./component/SpellingCard";
+import Header from "./component/Header";
+import StartMenu from "./component/StartMenu";
 
 function App() {
   const LIMIT = 9;
   const TIME_LIMIT = 6;
   const GOAL = 100;
 
+  const OPERATIONS_CONFIG = {
+    "+": {
+      name: "Addition",
+      description: "Practice adding numbers",
+      icon: "➕",
+    },
+    "-": {
+      name: "Subtraction",
+      description: "Practice subtracting numbers",
+      icon: "➖",
+    },
+    spelling: {
+      name: "Spelling",
+      description: "Practice spelling words",
+      icon: "✏️",
+    },
+  };
+
   const [count, setCount] = useState(0);
   const [timer, setTimer] = useState(0);
-  const [feedBack, setFeedBack] = useState(" ");
+  const [feedBack, setFeedBack] = useState("You got this...");
   const [feedBackClass, setFeedBackClass] = useState("");
   const [operation, setOperation] = useState("");
+
+  const [isDarkMode, setIsDarkMode] = useState(
+    () => window.matchMedia("(prefers-color-scheme: dark)").matches
+  );
+
+  // Add listener for system theme changes
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    const handleChange = (e) => {
+      setIsDarkMode(e.matches);
+    };
+
+    mediaQuery.addEventListener("change", handleChange);
+    return () => mediaQuery.removeEventListener("change", handleChange);
+  }, []);
+
+  useEffect(() => {
+    document.documentElement.setAttribute(
+      "data-theme",
+      isDarkMode ? "dark" : "light"
+    );
+  }, [isDarkMode]);
+
+  const toggleTheme = () => {
+    setIsDarkMode((prev) => !prev);
+  };
 
   const increment = () => {
     setCount(count + 1);
@@ -29,41 +76,61 @@ function App() {
         return prev - 1000;
       });
     }, 1000);
+    setOperation("");
+    return () => clearInterval(interval);
   };
 
-  const handleAddition = () => {
-    startTimer();
-    setOperation("+");
-  };
+  useEffect(() => {
+    return () => clearInterval();
+  }, []);
 
-  const handleSubtraction = () => {
-    startTimer();
-    setOperation("-");
+  const handleOperationSelect = (selectedOperation) => {
+    if (operation === "Spelling") {
+      startTimer();
+    }
+    setOperation(selectedOperation);
   };
 
   return (
     <div className="container">
-      <h1>Aitana's Flash Cards</h1>
-      {timer > 0 && count < GOAL ? (
-        <div>
-          <h2 className={`feedback ${feedBackClass}`}>{feedBack}</h2>
-          <h2>Count: {count}</h2>
-          <h2>Time Left:</h2>
-          <h2> {Math.floor(timer / 1000)} seconds</h2>
-          <Card
-            increment={increment}
-            limit={LIMIT}
-            setFeedBack={setFeedBack}
-            setFeedBackClass={setFeedBackClass}
-            operation={operation}
-          />
+      <Header toggleTheme={toggleTheme} isDarkMode={isDarkMode} />
+      {operation ? (
+        <div className="game-container">
+          <div className="stats">
+            <h2 className={`feedback ${feedBackClass}`}>{feedBack}</h2>
+            <h2>
+              Count: <br />
+              {count}
+            </h2>
+            {timer > 0 && (
+              <h2>
+                Time Left: <br />
+                {Math.floor(timer / 1000)} seconds
+              </h2>
+            )}
+          </div>
+          {operation === "spelling" ? (
+            <SpellingCard
+              increment={increment}
+              setFeedBack={setFeedBack}
+              setFeedBackClass={setFeedBackClass}
+            />
+          ) : (
+            <Card
+              increment={increment}
+              limit={LIMIT}
+              setFeedBack={setFeedBack}
+              setFeedBackClass={setFeedBackClass}
+              operation={operation}
+            />
+          )}
         </div>
       ) : (
-        <div>
-          {count > 0 && <h3>You got {count} answers</h3>}
-          <button onClick={handleAddition}>Start +</button>
-          <button onClick={handleSubtraction}>Start -</button>
-        </div>
+        <StartMenu
+          count={count}
+          operations={OPERATIONS_CONFIG}
+          onSelectOperation={handleOperationSelect}
+        />
       )}
     </div>
   );

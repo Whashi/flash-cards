@@ -4,12 +4,9 @@ import Card from "./component/Card";
 import SpellingCard from "./component/SpellingCard";
 import Header from "./component/Header";
 import StartMenu from "./component/StartMenu";
+import SettingsMenu from "./component/SettingsMenu";
 
 function App() {
-  const LIMIT = 9;
-  const TIME_LIMIT = 6;
-  const GOAL = 100;
-
   const OPERATIONS_CONFIG = {
     "+": {
       name: "Addition",
@@ -28,12 +25,20 @@ function App() {
     },
   };
 
+  //Settings
+  const [arithmaticLimit, setArithmaticLimit] = useState(9);
+  const [timeLimit, setTimeLimit] = useState(6);
+  const [goal, setGoal] = useState(100);
+
+  //Game state
   const [count, setCount] = useState(0);
   const [timer, setTimer] = useState(0);
   const [feedBack, setFeedBack] = useState("You got this...");
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [feedBackClass, setFeedBackClass] = useState("");
   const [operation, setOperation] = useState("");
 
+  //Theme state
   const [isDarkMode, setIsDarkMode] = useState(
     () => window.matchMedia("(prefers-color-scheme: dark)").matches
   );
@@ -60,13 +65,17 @@ function App() {
     setIsDarkMode((prev) => !prev);
   };
 
+  const toggleSettings = () => {
+    setIsSettingsOpen((prev) => !prev);
+  };
+
   const increment = () => {
     setCount(count + 1);
   };
 
   const startTimer = () => {
     setCount(0);
-    setTimer(TIME_LIMIT * 60 * 1000);
+    setTimer(timeLimit * 60 * 1000);
     const interval = setInterval(() => {
       setTimer((prev) => {
         if (prev <= 0) {
@@ -81,11 +90,21 @@ function App() {
   };
 
   useEffect(() => {
+    if (count >= goal) {
+      setFeedBack("You did it!");
+      setFeedBackClass("correct");
+      setCount(0);
+      setOperation("");
+      setTimer(0);
+    }
+  }, [count, goal]);
+
+  useEffect(() => {
     return () => clearInterval();
   }, []);
 
   const handleOperationSelect = (selectedOperation) => {
-    if (operation === "Spelling") {
+    if (operation !== "Spelling") {
       startTimer();
     }
     setOperation(selectedOperation);
@@ -93,7 +112,13 @@ function App() {
 
   return (
     <div className="container">
-      <Header toggleTheme={toggleTheme} isDarkMode={isDarkMode} />
+      <Header
+        toggleTheme={toggleTheme}
+        isDarkMode={isDarkMode}
+        setOperation={setOperation}
+        toggleSettings={toggleSettings}
+      />
+
       {operation ? (
         <div className="game-container">
           <div className="stats">
@@ -105,7 +130,8 @@ function App() {
             {timer > 0 && (
               <h2>
                 Time Left: <br />
-                {Math.floor(timer / 1000)} seconds
+                {Math.floor(timer / 60000)} min{" "}
+                {Math.floor((timer % 60000) / 1000)} sec
               </h2>
             )}
           </div>
@@ -118,7 +144,7 @@ function App() {
           ) : (
             <Card
               increment={increment}
-              limit={LIMIT}
+              limit={arithmaticLimit}
               setFeedBack={setFeedBack}
               setFeedBackClass={setFeedBackClass}
               operation={operation}
@@ -132,6 +158,16 @@ function App() {
           onSelectOperation={handleOperationSelect}
         />
       )}
+      <SettingsMenu
+        isOpen={isSettingsOpen}
+        onClose={() => setIsSettingsOpen(false)}
+        arithmaticLimit={arithmaticLimit}
+        setArithmaticLimit={setArithmaticLimit}
+        timeLimit={timeLimit}
+        setTimeLimit={setTimeLimit}
+        goal={goal}
+        setGoal={setGoal}
+      />
     </div>
   );
 }

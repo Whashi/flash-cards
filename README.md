@@ -1,58 +1,72 @@
-# Flash Cards Math Game
+# Aitana's Flash Cards
 
-A simple and interactive math flash cards game built with React. Perfect for helping children practice their addition skills under time pressure.
+An interactive educational app for practicing arithmetic and spelling, built with React.
 
 ## Features
 
-- Dynamic addition problems up to 9
-- Timer-based gameplay (3 minutes)
-- Instant feedback on answers
-- Goal-based system (100 problems)
-- Mobile-friendly number pad input
-- Visual feedback for correct/incorrect answers
+- 🔢 Arithmetic Practice (Addition & Subtraction)
+- ✏️ Spelling Practice
+- 🌓 Dark/Light Theme
+- ⚙️ Customizable Settings
+- ⏲️ Timed Practice Sessions
+- 🎯 Progress Tracking
+- 🗣️ Text-to-Speech Support
 
 ## Getting Started
 
 ### Prerequisites
 
-- Node.js
-- npm or yarn
+- Node.js (v16 or higher)
+- npm (v7 or higher)
 
 ### Installation
 
-1. Clone the repository
+1. Clone the repository:
 ```bash
-git clone [your-repo-url]
+git clone https://github.com/yourusername/flash-cards.git
+cd flash-cards
 ```
 
-2. Install dependencies
+2. Install dependencies:
 ```bash
 npm install
 ```
 
-3. Start the development server
+3. Start the development server:
 ```bash
-npm run dev
+npm start
 ```
 
-## How to Play
+## Usage
 
-1. Click the "Start" button to begin
-2. You have 3 minutes to solve as many addition problems as possible
-3. Type your answer in the input field
-4. Get immediate feedback on your answers
-5. Try to reach 100 correct answers before time runs out!
+1. Select a practice mode (Addition, Subtraction, or Spelling)
+2. Set your desired:
+   - Time limit
+   - Number range (for arithmetic)
+   - Practice goal
+3. Start practicing!
 
-## Built With
+## Customization
 
-- React
-- Vite
-- CSS
+Access the settings menu (⚙️) to modify:
+- Number limits for arithmetic
+- Time limits for practice sessions
+- Achievement goals
 
 ## Contributing
 
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
 ## License
 
-[MIT](https://choosealicense.com/licenses/mit/)
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+
+- Built with [React](https://reactjs.org/)
+- Icons from Unicode Emoji
+- Speech synthesis using Web Speech API
